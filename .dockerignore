@@ -1,0 +1,7 @@
+__pycache__
+*.pyc
+.env
+.git
+artifacts/*.joblib
+artifacts/*.pt
+artifacts/*.npy

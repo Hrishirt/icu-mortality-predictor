@@ -1,0 +1,66 @@
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+pip-wheel-metadata/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Project data (download via scripts/download_data.ps1 or wget)
+data/physionet/set-a/
+data/physionet/set-b/
+data/physionet/set-c/
+data/physionet/*.zip
+data/physionet/*.tar.gz
+
+# Trained model artifacts (regenerate with scripts/train_models.py)
+artifacts/*.joblib
+artifacts/*.pt
+artifacts/*.npy
+
+# Local API test payloads
+payload.json
+sample_payload.json
+
+# Logs
+*.log
+logs/
+
+# Docker
+docker-compose.override.yml
