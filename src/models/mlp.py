@@ -27,8 +27,7 @@ class MortalityMLP(nn.Module):
 
 
 class MLPPredictor:
-    """Sklearn-compatible wrapper around a trained PyTorch MLP."""
-
+    # Wraps the PyTorch model so training code can call predict_proba().
     def __init__(
         self,
         model: MortalityMLP,

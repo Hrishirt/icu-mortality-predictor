@@ -11,6 +11,7 @@ Base = declarative_base()
 
 
 class PredictionLog(Base):
+    # Audit trail for every API prediction.
     __tablename__ = "prediction_logs"
 
     id = Column(Integer, primary_key=True, autoincrement=True)

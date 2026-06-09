@@ -14,6 +14,7 @@ def train_gradient_boosting(
 ) -> Pipeline:
     model = Pipeline(
         steps=[
+            # Median imputation handles missing vitals and labs.
             ("imputer", SimpleImputer(strategy="median")),
             (
                 "classifier",

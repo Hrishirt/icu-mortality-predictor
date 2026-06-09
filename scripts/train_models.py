@@ -1,5 +1,3 @@
-"""Train Gradient Boosting and MLP models on PhysioNet 2012 set-a."""
-
 import json
 import sys
 from pathlib import Path

@@ -20,6 +20,7 @@ from src.models.mlp import MortalityMLP, train_mlp
 
 
 def evaluate_model(y_true, y_prob, threshold: float = 0.5) -> dict[str, float]:
+    # Binary metrics at the default 0.5 decision threshold.
     y_pred = (y_prob >= threshold).astype(int)
     precision, recall, f1, _ = precision_recall_fscore_support(
         y_true, y_pred, average="binary", zero_division=0
@@ -52,6 +53,7 @@ def _save_artifacts(
     with open(output_dir / "metrics.json", "w", encoding="utf-8") as f:
         json.dump(metrics, f, indent=2)
 
+    # Background samples used by SHAP at inference time.
     np.save(output_dir / "shap_background.npy", X_background)
 
     mlp_predictor = mlp_model

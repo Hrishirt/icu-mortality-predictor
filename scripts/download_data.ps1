@@ -1,4 +1,4 @@
-# Download PhysioNet Challenge 2012 dataset (Windows alternative to wget -r)
+# Download PhysioNet Challenge 2012 training data.
 $DataDir = Join-Path $PSScriptRoot "..\data\physionet"
 New-Item -ItemType Directory -Force -Path $DataDir | Out-Null
 

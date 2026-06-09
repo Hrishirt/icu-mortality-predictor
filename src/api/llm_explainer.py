@@ -37,6 +37,7 @@ def _format_feature_summary(shap_features: list[dict], top_n: int = 5) -> str:
 
 
 def _fallback_explanation(risk_score: float, shap_features: list[dict]) -> str:
+    # Used when OPENAI_API_KEY is not set.
     top = shap_features[:3]
     drivers = []
     for item in top:

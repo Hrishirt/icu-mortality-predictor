@@ -1,5 +1,3 @@
-"""Build a sample API payload from a PhysioNet patient record."""
-
 import json
 import sys
 from pathlib import Path

@@ -7,8 +7,7 @@ import numpy as np
 
 
 def _ensure_native_runtime() -> None:
-    # Import torch before SHAP/sklearn native code on Windows to avoid crashes.
-    import torch  # noqa: F401
+    import torch  # noqa: F401  # required import order on Windows
 
 
 def _import_shap():
@@ -32,6 +31,7 @@ class SHAPExplainer:
         self.model_type = model_type
 
         if model_type == "gradient_boosting":
+            # TreeExplainer is fast and exact for tree models.
             classifier = model.named_steps["classifier"]
             imputer = model.named_steps["imputer"]
             background_imputed = imputer.transform(background_data)
@@ -66,6 +66,7 @@ class SHAPExplainer:
             {"feature": name, "shap_value": float(value)}
             for name, value in zip(self.feature_names, values, strict=True)
         ]
+        # Largest absolute contributions are the most influential features.
         contributions.sort(key=lambda item: abs(item["shap_value"]), reverse=True)
         return contributions
 

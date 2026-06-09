@@ -1,5 +1,3 @@
-"""Load PhysioNet 2012 ICU records and build aggregated feature matrices."""
-
 from __future__ import annotations
 
 from pathlib import Path
@@ -7,7 +5,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+# Demographics recorded once at ICU admission.
 STATIC_PARAMS = {"Age", "Gender", "Height", "Weight", "ICUType", "RecordID"}
+# Summary stats computed for each vital/lab time series.
 AGG_FUNCS = ("mean", "median", "min", "max", "std", "last", "count")
 
 
@@ -24,6 +24,7 @@ def load_patient_record(record_path: Path) -> pd.DataFrame:
 
 
 def _aggregate_timeseries(series: pd.Series) -> dict[str, float]:
+    # -1 is a missing-value sentinel in the PhysioNet files.
     values = pd.to_numeric(series, errors="coerce").replace(-1, np.nan).dropna()
     if values.empty:
         return {func: np.nan for func in AGG_FUNCS}
@@ -43,11 +44,13 @@ def extract_patient_features(record_df: pd.DataFrame) -> dict[str, float]:
     features: dict[str, float] = {}
     admission = record_df[record_df["Time"] == pd.Timedelta(0)]
 
+    # Static patient attributes from the admission row.
     for param in STATIC_PARAMS - {"RecordID"}:
         row = admission[admission["Parameter"] == param]
         value = row["Value"].iloc[0] if not row.empty else np.nan
         features[param] = float(value) if pd.notna(value) else np.nan
 
+    # Vitals and labs measured over the ICU stay.
     timeseries = record_df[~record_df["Parameter"].isin(STATIC_PARAMS)]
     for param, group in timeseries.groupby("Parameter"):
         for func, value in _aggregate_timeseries(group["Value"]).items():

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import joblib
 import numpy as np
-import torch  # noqa: F401 - initialize native runtime before SHAP/sklearn
+import torch  # noqa: F401
 
 from src.config import settings
 from src.explainability.shap_explainer import SHAPExplainer
@@ -34,6 +34,7 @@ class MortalityPredictor:
         raise ValueError(f"Unknown model: {self.model_name}")
 
     def _vectorize(self, features: dict[str, float]) -> np.ndarray:
+        # Align input dict to the trained feature order; missing keys become NaN.
         values = [features.get(name, np.nan) for name in self.feature_names]
         return np.array(values, dtype=float).reshape(1, -1)
 

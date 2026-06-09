@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 
-import torch  # noqa: F401 - initialize native runtime before SHAP/sklearn
+import torch  # noqa: F401
 from fastapi import FastAPI, HTTPException
 
 from src.api.llm_explainer import generate_explanation
@@ -15,6 +15,7 @@ predictor: MortalityPredictor | None = None
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     global predictor
+    # DB is optional at startup; predictions still work without it.
     try:
         init_db()
     except Exception:
@@ -77,6 +78,7 @@ def predict_mortality(payload: PatientFeatures):
     risk_score, shap_features = predictor.predict(payload.features)
     explanation = generate_explanation(risk_score, shap_features)
 
+    # Log to PostgreSQL when available.
     prediction_id = None
     try:
         record = log_prediction(
